@@ -1,8 +1,0 @@
-
-docker exec -it cinema-mysql bash
-
-mysql -u root -p
-
-ÃÜÂë: root
-
-Êı¾İ¿â: cinema
