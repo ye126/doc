@@ -1,0 +1,417 @@
+## 简单前端配置介绍
+
+### 查询页面介绍
+
+``` json
+{
+  "layout": "TitleContent",
+  "title": "添加项目",
+  "items": []
+}
+```
+
+* layout: 页面布局格式
+* title: 标题
+* items: 具体内容
+
+items里面的代码:
+
+``` 
+[
+     {
+        "layout": "Content",
+        component: 'Search',
+        "config": {}
+      },
+
+     {
+        "layout": "Content",
+        component: 'Table',
+        "config": {}
+      }
+]
+```
+
+items里面有三个属性
+
+*  layout: 布局样式
+*  component: 组件类型 Search 搜索栏 Table 列表显示组件
+*  config: 具体配置
+
+config 里面的代码:
+ Search 和 Table 里面的内容不太相同
+
+``` 
+//对于Search
+{
+          fields: [
+            {
+              "field": "search",
+              "label": "搜索",
+              "type": "input"
+            },
+            {
+              field: 'searchContractAmount', label: '合同金额', type: 'number-range',
+            },
+            {
+              field: 'searchPaymentAmount', label: '合同款到账金额', type: 'number-range',
+            },
+          ],
+}
+```
+
+对于 Search 下的config说明
+fields: 查询字段
+
+* field 传给后端的字段名
+* lable 查询框左侧标签提示
+* type 类型
+
+> type类型详解
+> input: 基本搜索框
+> number-range: 范围搜索框
+> range: 时间搜索框
+
+``` 
+//对于Table
+{
+        API: {
+          listAPI: setting.listAPI,
+          deleteAPI: setting.deleteAPI,
+        },
+        actions: [
+          {
+            "title": "新增",
+            "type": "path",
+            "options": {
+              "path": "/project/purchase-add"
+            }
+          },
+          {
+            title: '导出 pdf', type: 'export-excel',
+            options: {
+              API: '/api/io/pdf/export/收款记录',
+              method: 'get',
+              name: 'costs', // 配置 templateName。可选，不填则默认使用 namespace
+            },
+          },
+        ],
+        fields: [
+          {
+            "className": "",
+            "options": {},
+            "field": "projectName",
+            "label": "付款项目",
+            valueType: 'ellipsis',
+            width: 100,
+            fixed: 'left',
+          }
+        ],
+        operation: [
+          {
+            "title": "编辑",
+            "type": "path",
+            "options": {
+              "outside": true,
+              "path": "/project/purchase-edit"
+            }
+          },
+          {
+            "title": "删除",
+            "type": "delete"
+          }
+        ],
+
+      }
+```
+
+对于 Table 下的config说明
+
+* api: 定义了要用到的api
+* actions: 定义了当前组件顶部的按钮
+
+> title: 按钮名字
+> type:request 按钮为类型为调用api 
+
+request类型代码示例：
+
+``` 
+"type": "request",
+"options": {
+  "API": "/api/crud/project/projects/reset"
+}
+```
+
+> type:path 按钮类型为路径
+
+``` 
+"type": "path",
+  "options": {
+    "path": "/project/purchase-add"
+  }
+```
+
+> type: 'export-excel' 为导出
+
+``` 
+title: '导出 pdf', type: 'export-excel',
+  options: {
+    API: '/api/io/pdf/export/收款记录',
+    method: 'get',
+    name: 'costs', // 配置 templateName。可选，不填则默认使用 namespace
+  },
+```
+
+> options：拓展选项
+>> path:js路由 -- type为path时用
+>> API:api访问路径 -- type为request和export-excel时用
+>> method: 请求的方式
+>> name:pdf专用的配置 用于配置templateName
+
+* fields 列表中显示的字段
+
+> 一般只要三个字段就行了
+> "valueType": "tag", 
+> "field": "type", 
+> "label": "类型"
+>  
+> valueType: 类型   field 字段    label 表头
+> ##### valueType类型详解
+> * ellipsis 会省略过长字段的类型 配合 width: 100 使用
+> * currency 金额类型
+> * percentage 百分比类型
+> * 使用tag类型的话，需要额外对options进行配置
+
+``` 
+{
+  "options": {
+    "map": {
+      "NOT_START": "未出工",
+      "WORK_IN_PROCESS": "检测中",
+      "CHECK_COMPLETED": "检测完成",
+      "REPORT_ALREADY": "已出报告",
+      "NORMAL_ENDED": "正常结束",
+      "FORCED_ENDED": "强制结束"
+    },
+    "color": {
+      "NOT_START": "#888",
+      "WORK_IN_PROCESS": "#777",
+      "CHECK_COMPLETED": "#1892ff",
+      "REPORT_ALREADY": "#1893ff",
+      "NORMAL_ENDED": "#1894ff",
+      "FORCED_ENDED": "#1895ff"
+    }
+  },
+  "valueType": "tag",
+  "field": "status",
+  "label": "状态"
+},
+```
+
+> map为返回值对应的中文映射
+> color为返回值对应的颜色映射
+
+####简单页面例子
+
+``` js
+const setting = require('./.setting/purchase.js');
+
+module.exports = {
+    layout: 'TitleContent',
+    title: setting.pageName,
+    items: [{
+            component: 'Search',
+            config: {
+                fields: [{
+                        "field": "search",
+                        "label": "搜索",
+                        "type": "input"
+                    },
+                    {
+                        field: 'searchContractAmount',
+                        label: '合同金额',
+                        type: 'number-range',
+                    },
+                    {
+                        field: 'searchPaymentAmount',
+                        label: '合同款到账金额',
+                        type: 'number-range',
+                    },
+                ],
+            },
+        },
+        {
+            component: 'Table',
+            config: {
+                API: {
+                    listAPI: setting.listAPI,
+                    deleteAPI: setting.deleteAPI,
+                },
+                actions: [{
+                        "title": "新增",
+                        "type": "path",
+                        "options": {
+                            "path": "/project/purchase-add"
+                        }
+                    },
+                    {
+                        title: '导出 pdf',
+                        type: 'export-excel',
+                        options: {
+                            API: '/api/io/pdf/export/收款记录',
+                            method: 'get',
+                            name: 'costs', // 配置 templateName。可选，不填则默认使用 namespace
+                        },
+                    },
+                ],
+                fields: [{
+                        "className": "",
+                        "options": {},
+                        "field": "projectName",
+                        "label": "付款项目",
+                        valueType: 'ellipsis',
+                        width: 100,
+                        fixed: 'left',
+                    },
+                    {
+                        "className": "",
+                        "field": "categoryCode",
+                        "label": "项目编号",
+                        valueType: 'ellipsis',
+                        width: 130,
+                    },
+                    {
+                        "className": "",
+                        "field": "categoryName",
+                        "label": "检测合同委托方",
+                        valueType: 'ellipsis',
+                        width: 130,
+                    },
+                    {
+                        "className": "",
+                        "field": "orgName",
+                        "label": "归属团队",
+                        width: 100,
+                    },
+                    {
+                        "className": "",
+                        "field": "agentName",
+                        "label": "归属股东",
+                        width: 130,
+                    },
+                    {
+                        "className": "",
+                        "field": "contractAmount",
+                        "label": "合同金额",
+                        valueType: 'currency',
+                        width: 120,
+                    },
+                    {
+                        "align": "right",
+                        "options": {},
+                        "className": "",
+                        "valueType": "currency",
+                        "field": "paymentAmount",
+                        "label": "合同款到账金额",
+                        width: 120,
+                    },
+
+                    {
+                        "className": "",
+                        "field": "contractTime",
+                        "label": "签约日期",
+                        width: 100,
+                    },
+                    {
+                        "className": "",
+                        "field": "createTime",
+                        "label": "合同款到时间",
+                        width: 120,
+                    },
+
+                    {
+                        "className": "",
+                        "field": "note",
+                        "label": "备注",
+                        valueType: 'ellipsis',
+                        width: 200,
+                    }
+                ],
+                operation: [{
+                        "title": "编辑",
+                        "type": "path",
+                        "options": {
+                            "outside": true,
+                            "path": "/project/purchase-edit"
+                        }
+                    },
+                    {
+                        "title": "删除",
+                        "type": "delete"
+                    }
+                ],
+
+            },
+        },
+    ],
+};
+```
+
+前端请求信息：
+
+``` 
+http://192.168.3.88:8080/api/crud/project/receiptRecords?_t=1596173978897&pageNum=1&pageSize=10
+```
+
+API返回信息：
+
+``` JSON
+{
+	"code": 200,
+	"message": "Success",
+	"data": {
+		"total": 2,
+		"size": 10,
+		"pages": 1,
+		"current": 1,
+		"records": [{
+			"extra": null,
+			"id": 1,
+			"projectId": 237,
+			"paymentName": null,
+			"paymentAmount": 2222.00,
+			"payer": null,
+			"payee": null,
+			"note": "5555",
+			"updateTime": "2020-07-31",
+			"createTime": "2020-07-31",
+			"projectName": "项目",
+			"categoryCode": null,
+			"categoryName": "有限公司",
+			"orgName": null,
+			"agentName": "Azhao",
+			"contractAmount": 4800.00,
+			"contractTime": "2019-06-08"
+		}, {
+			"extra": null,
+			"id": 2,
+			"projectId": 253,
+			"paymentName": null,
+			"paymentAmount": 1212.00,
+			"payer": null,
+			"payee": null,
+			"note": "1212",
+			"updateTime": "2020-07-31",
+			"createTime": "2020-07-31",
+			"projectName": "防雷检测",
+			"categoryCode": "GD[2020]-4-0048号",
+			"categoryName": "有限公司",
+			"orgName": "组织名",
+			"agentName": "agentName",
+			"contractAmount": 2000.00,
+			"contractTime": "2020-06-15"
+		}]
+	}
+}
+
+```

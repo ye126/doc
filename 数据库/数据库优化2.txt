@@ -1,0 +1,7 @@
+初次无缓存 21.789s 19.705s
+
+t_sys_org(left_num,right_num)组合索引   17.470s
+
+去掉t_org_user_relation 表的连接查询
+
+CREATE INDEX t_org_user_relation_org_id on t_org_user_relation(org_id);  加速至0.067s

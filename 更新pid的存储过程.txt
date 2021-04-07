@@ -1,0 +1,147 @@
+
+select t_industry.`code` from t_industry where type = 'L';
+update t_industry set pid = (select ) where type ='L'
+
+ SELECT id   FROM t_industry where type = 'L' limit 1 ,1;  
+
+delimiter //  
+drop procedure  if exists test //  
+create procedure test()  
+begin   
+declare total int default 3;  
+declare lid int ; 
+declare icode VARCHAR(200) ;  
+declare pid int ;  
+declare _first int ;  
+   
+ select count(*) into total  from t_industry where type = 'L';  
+ WHILE  total >1 DO   
+  set _first = 0 ;  
+  SELECT id into lid  FROM t_industry where type = 'L' limit _first ,1;  
+  SELECT `code` into icode  FROM t_industry where type = 'L' limit _first ,1; 
+
+	set icode = left(icode,LENGTH(icode)-1);
+	SELECT id into pid  FROM t_industry where type = 'X' and `code` = icode limit _first ,1; 
+
+
+  set total = total - 1 ;  
+  set _first = _first + 1 ;  
+  select picid ;  
+ end while ;  
+end   
+//  
+delimiter ;  
+call test();  
+
+
+delimiter //  
+drop procedure  if exists test //  
+create procedure test()  
+begin 
+declare icode VARCHAR(200) ;
+set icode = '111';
+	set icode = left(icode,LENGTH(icode)-1);
+	SELECT id   FROM t_industry where type = 'M' and `code` = icode ; 
+ select icode;
+end 
+//  
+delimiter ;  
+call test();  
+
+
+
+
+
+-- --------------- 更新L类型 ---------
+
+delimiter //  
+drop procedure  if exists test //  
+create procedure test()  
+begin   
+declare total int default 3;  
+declare lid int ; 
+declare icode VARCHAR(200) ;  
+declare tpid int ;  
+declare _first int ;  
+set _first = 0 ; 
+
+ select count(*) into total  from t_industry where type = 'L';  
+ WHILE  total >1 DO   
+   
+  SELECT id into lid  FROM t_industry where type = 'L' limit _first ,1;  
+  SELECT `code` into icode  FROM t_industry where type = 'L' limit _first ,1; 
+
+	set icode = left(icode,LENGTH(icode)-1);
+	SELECT id into tpid  FROM t_industry where type = 'X' and id<lid ORDER BY id desc limit 0,1; 
+	update t_industry set pid = tpid where id = lid ;
+  set total = total - 1 ;  
+  set _first = _first + 1 ;  
+  select tpid,lid,_first;  
+ end while ;  
+end   
+//  
+delimiter ;  
+call test(); 
+ 
+-- --------------- 更新M类型 ---------
+
+delimiter //  
+drop procedure  if exists test //  
+create procedure test()  
+begin   
+declare total int default 3;  
+declare lid int ; 
+declare icode VARCHAR(200) ;  
+declare tpid int ;  
+declare _first int ;  
+set _first = 0 ; 
+
+ select count(*) into total  from t_industry where type = 'M';  
+ WHILE  total >1 DO   
+   
+  SELECT id into lid  FROM t_industry where type = 'M' limit _first ,1;  
+  SELECT `code` into icode  FROM t_industry where type = 'M' limit _first ,1; 
+
+	set icode = left(icode,LENGTH(icode)-1);
+	SELECT id into tpid  FROM t_industry where type = 'L' and `code` = icode  ; 
+	update t_industry set pid = tpid where id = lid ;
+  set total = total - 1 ;  
+  set _first = _first + 1 ;  
+  select tpid,lid,_first,icode;  
+ end while ;  
+end   
+//  
+delimiter ;  
+call test();  
+
+-- --------------- 更新S类型 ---------
+
+delimiter //  
+drop procedure  if exists test //  
+create procedure test()  
+begin   
+declare total int default 3;  
+declare lid int ; 
+declare icode VARCHAR(200) ;  
+declare tpid int ;  
+declare _first int ;  
+set _first = 0 ; 
+
+ select count(*) into total  from t_industry where type = 'S';  
+ WHILE  total >1 DO   
+   
+  SELECT id into lid  FROM t_industry where type = 'S' limit _first ,1;  
+  SELECT `code` into icode  FROM t_industry where type = 'S' limit _first ,1; 
+
+	set icode = left(icode,LENGTH(icode)-1);
+	SELECT id into tpid  FROM t_industry where type = 'M' and `code` = icode  ; 
+	update t_industry set pid = tpid where id = lid ;
+  set total = total - 1 ;  
+  set _first = _first + 1 ;  
+  select tpid,lid,_first,icode;  
+ end while ;  
+end   
+//  
+delimiter ;  
+call test();  
+

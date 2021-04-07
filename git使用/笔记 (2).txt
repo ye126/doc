@@ -1,0 +1,37 @@
+$ git submodule add  url  [文件名] 
+将目标模块加到当前模块中作为子模块 url为子模块路径
+$ git status
+显示索引文件和当前HEAD提交之间的差异 
+     --
+     --Changes to be committed:  (已经在stage区, 等待添加到HEAD中的文件)
+     --modified 被修改
+     --Untracked files:(没有tracked过的文件, 即从没有add过的文件)
+
+$ git submodule 
+查看子模块
+
+
+$ git submodule update
+更新项目内子模块到最新版本
+
+$ git submodule update --remote
+更新子模块为远程项目的最新版本
+
+如果要克隆包含子模块的项目
+克隆包含子模块的项目有二种方法：1 先$ git clone父项目，再更新子模块；
+                                                          更新子模块的时候会看到子模块前面有个 ‘-’ 符号 代表子模块未检入（空）
+                                                           $ git submodule init 初始化子模块 $ git submodule update 更新子模块
+                                                   2 是直接递归克隆整个项目。
+                                                       git clone url [文件夹名] --recursive 
+                                                       可以一步到位
+
+修改
+$ git add .
+$ git ci -m "commit"
+$ git push origin HEAD:master
+
+
+
+
+
+

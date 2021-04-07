@@ -1,0 +1,9 @@
+
+方法1
+//请求信息直接转成JSONObject
+JSONObject responseJSON = JSON.parseObject(responObject.toString());
+
+方法2 OBJECT转JSON：
+JSONObject responseJSON =  (JSONObject) JSON.toJSON(responObject);
+
+//

@@ -1,0 +1,12 @@
+/**
+     * find jar file 
+     */ 
+    String LOCATION = ""; 
+    String URLLOCATION = ""; 
+    try {     
+		LOCATION =[YourJavaFile].class.getProtectionDomain().getCodeSource().getLocation().getFile(); 
+		URLLOCATION =  URLDecoder.decode(LOCATION, "UTF-8"); 
+    } catch (UnsupportedEncodingException e) { 
+		logger.error("get LOCATION error", e); 
+    } 
+    logger.debug("** loc=" + LOCATION + "; URLLoc=" + URLLOCATION);

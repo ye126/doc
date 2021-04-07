@@ -1,0 +1,10 @@
+target/*
+build/*
+.idea/*
+.gradle/*
+.svn/*
+*.iml
+*.swp
+*.log
+*.db
+LOG_*

@@ -1,0 +1,15 @@
+HttpServletRequest requet=ServletActionContext.getRequest();
+
+requet.getScheme()+"://"+requet.getServerName()+":"+requet.getServerPort()
+
+(例如)结果为：http://localhost:8080/
+
+ 
+
+request.getHeader("User-Agent");    //就是取得客户端的系统版本     
+request.getRemoteAddr();    //取得客户端的IP     
+request.getRemoteHost()     //取得客户端的主机名     
+request.getRemotePort();    //取得客户端的端口     
+request.getRemoteUser();    //取得客户端的用户     
+request.getLocalAddr();    //取得服务器IP     
+request.getLocalPort();    //取得服务器端口

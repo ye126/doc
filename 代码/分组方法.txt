@@ -1,0 +1,34 @@
+    @Override
+    public List<EavEntityTypeRecord> getGroupType(){
+        //获取顶部组
+        List<EavEntityTypeRecord> pTypes = queryEavEntityTypeDao.getPType();
+        List<EavEntityTypeRecord> upOneTypes = pTypes;
+
+        List<Long> pIds = pTypes.stream().map(i -> i.getId()).collect(Collectors.toList());
+        while(pIds!=null && pIds.size()>0){
+
+            //循环获取子组
+            List<EavEntityTypeRecord> sonTypes = queryEavEntityTypeDao.getSonTypes(pIds);
+            if(sonTypes!=null &&sonTypes.size()>0){
+                //子类处理
+                Map<Long, List<EavEntityTypeRecord>> sonMap = sonTypes.stream().collect(Collectors.toMap(i -> i.getPid(), value -> Lists.newArrayList(value),
+                        (List<EavEntityTypeRecord> v1, List<EavEntityTypeRecord> v2) -> {
+                            v1.addAll(v2);
+                            return v1;
+                        }));
+                //子类放入父类中
+                for (EavEntityTypeRecord upOneType:upOneTypes){
+                    List<EavEntityTypeRecord> eavEntityTypeRecords = sonMap.get(upOneType.getId());
+                    if(eavEntityTypeRecords!=null && eavEntityTypeRecords.size()>0){
+                        upOneType.setChildren(eavEntityTypeRecords);
+                    }
+                }
+                upOneTypes = sonTypes;
+                pIds=sonTypes.stream().map(i -> i.getId()).collect(Collectors.toList());
+            }else{
+                pIds =null;
+            }
+        }
+        return pTypes;
+
+    }

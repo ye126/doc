@@ -1,0 +1,14 @@
+以后所有zelejs/mirror不再维护
+
+category-service.git	zelejs@zele.pro:/home/zelejs/mirror/category-service.git  		已merge到 =》 git@github.com:zelejs/category-service.git 
+//crud-log 				zelejs@zele.pro:/home/zelejs/mirror/crud-log.git                已merge到 =》 git@github.com:zelejs/crud-log.git 
+//crud-services			本地没有                                                                                  失败
+//field-config			zelejs@zele.pro:/home/zelejs/mirror/field-config.git            已merge到 =》 git@github.com:zelejs/field-config.git
+//mbcs 					git@github.com:zelejs/mbcs.git
+//uaas 弃用 只用一个版本	zelejs@zele.pro:/home/zelejs/mirror/uaas.git                     已merge到 =》 git@github.com:zelejs/uaas.git
+//uaas（saas版本的）		git@github.com:zelejs/uaas.git
+//etcd-client 			git@github.com:zelejs/etcd-client.git
+//cms						git@github.com:kequandian/cms.git  最新git更新记录 2020/3/3
+//crud-plus				zelejs@zele.pro:/home/zelejs/mirror/crud-plus.git				git remote set-url origin git@github.com:zelejs/crud-plus.git
+//gobelieve_api			本地没有
+//saas-app 				本地没有修改记录 git@github.com:zelejs/saas-app.git

@@ -1,0 +1,3 @@
+vi ~/.bash_profile		修改个人配置文件
+source ~/.bash_profile   使配置文件生效
+ echo $PATH 			查看PATH配置

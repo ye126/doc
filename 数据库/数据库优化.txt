@@ -1,0 +1,64 @@
+
+初次查询时间 11.041s
+再次查询 8.573s
+第三次查询 8.544s
+
+cinema 建立索引org_id 8.853s
+cinema 建立索引 assistant_id 9.251   8.541   8.638  8.931（去缓存测速度） 
+				8.759s 8.769s 8.723s(仅仅assistant_id索引)
+				8.688s （无索引）
+				
+pcd type建立索引 0.025s(pcd仅仅type，pid索引) 多次执行后时长在 0.016s 0.013-0.016s之间
+pcd name建立索引 0.020s(pcd仅仅name，pid索引) 多次执行后时长在 0.010s到0.009之间
+				两个都加 时长在0.010 0.009s之间
+				
+				
+				此时加上cinema的两个索引 对本次查询无影响
+
+				
+sql
+
+SELECT SQL_NO_CACHE
+	ca_cinema.id,
+	ca_cinema. NAME,
+	ca_cinema.province,
+	ca_cinema.city,
+	ca_cinema.area,
+	ca_cinema.line_id AS lineId,
+	ca_cinema.qualification_number AS qualificationNumber,
+	ca_cinema.room_number AS roomNumber,
+	ca_cinema.seat_number AS seatNumber,
+	ca_cinema.contact_name AS contactName,
+	ca_cinema.contact,
+	ca_cinema.business_area AS businessArea,
+	ca_cinema.address,
+	ca_cinema.org_id AS orgId,
+	ca_cinema.note,
+	ca_cinema.create_time AS createTime,
+	ca_cinema.line_name AS lineName,
+	ca_cinema.pcd_id AS pcdId,
+	ca_cinema.ticket AS ticket,
+	ca_cinema.update_time AS updateTime,
+	ca_cinema.assistant_id AS assistantId,
+	district,
+	business_license_prove AS businessLicenseProve,
+	business_license_phone AS businessLicensePhone,
+	t_sys_user. NAME AS assistantName,
+
+IF (
+	ca_cinema.org_id IS NULL,
+	'false',
+	'true'
+) AS accountStatus,
+ pcd.city_level AS cityLevel
+FROM
+	ca_cinema
+LEFT JOIN t_sys_user ON t_sys_user.id = ca_cinema.assistant_id
+LEFT JOIN pcd ON pcd. NAME = ca_cinema.city
+AND pcd.type = 'c'
+WHERE
+	1 = 1
+ORDER BY
+	ca_cinema.org_id,
+	create_time DESC
+LIMIT 0,10;

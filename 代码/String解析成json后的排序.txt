@@ -1,0 +1,2 @@
+        //Feature.OrderedField 按原有String排序
+        JSONObject aliJSON = JSON.parseObject(alibabaString, Feature.OrderedField);

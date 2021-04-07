@@ -1,0 +1,3 @@
+
+tasklist|findstr "8088"     查看8088端口占用情况
+taskkill /f /t /im   [id]   停止指定id进程

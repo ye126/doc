@@ -1,0 +1,28 @@
+du -m --max-depth=1或du -h --max-depth=1
+du：用于统计linux中文件或目录所占磁盘空间的大小du参数######-
+m：以M为单位展示查询结果
+-h：以K、M、G为单位展示查询结果，提高信息可读性
+--max-depth=1：其中，数字“1”是指查询结果中最多显示的目录层数，这里指最多显示一层目录
+
+
+^C[root@localhost docker]# du -h --max-depth=1
+148K	./containerd
+359M	./containers
+0	./plugins
+13G	./overlay2
+17M	./image
+205M	./volumes
+0	./trust
+112K	./network
+0	./swarm
+16K	./builder
+821M	./buildkit
+0	./tmp
+0	./runtimes
+14G	.    --这里显示当前文件夹总占用情况
+
+
+
+
+du -h --max-depth=1 |sort -rh | head -5      sort 按大小排序 | head -5 显示头部的5条
+
