@@ -1,0 +1,11 @@
+create_time 创建时间
+	sql：
+	`create_time` datetime DEFAULT CURRENT_TIMESTAMP
+	navicat中默认值直接填 now() 会自动转换成 CURRENT_TIMESTAMP
+
+update_time 更新时间
+	sql:
+	`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	
+
+
